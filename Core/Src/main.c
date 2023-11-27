@@ -18,12 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-<<<<<<< Updated upstream
-
-=======
-#include "stdio.h"
-#include "stdlib.h"
->>>>>>> Stashed changes
+#include <stdio.h>
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -67,17 +62,12 @@ static void MX_TIM2_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-<<<<<<< Updated upstream
-uint8_t temp = 0;
-void HAL_UART_RxCpltCallback ( UART_HandleTypeDef * huart ) {
-=======
 char str[50];
 uint8_t temp = 0;
 //uint8_t buffer[MAX_BUFFER_SIZE];
 //uint8_t index_buffer = 0;
 //uint8_t buffer_flag = 0;
 void HAL_UART_RxCpltCallback (UART_HandleTypeDef * huart) {
->>>>>>> Stashed changes
 	if(huart->Instance == USART2 ) {
 		HAL_UART_Transmit(&huart2 ,&temp ,1 ,50);
 		HAL_UART_Receive_IT(&huart2, &temp ,1);
@@ -127,20 +117,10 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-<<<<<<< Updated upstream
 	  HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
 	  ADC_value = HAL_ADC_GetValue(&hadc1) ;
 	  HAL_UART_Transmit (&huart2, (void *) str, sprintf(str, "%d\n", ADC_value), 1000);
 	  HAL_Delay(500);
-=======
-	  HAL_GPIO_TogglePin ( LED_RED_GPIO_Port , LED_RED_Pin ) ;
-
-	  ADC_value = HAL_ADC_GetValue(&hadc1);
-	  //ADC_value = 2.5;
-	  HAL_UART_Transmit (&huart2 , (void *)str , sprintf(str , "%d\n", ADC_value ) , 1000);
-
-	  HAL_Delay (500) ;
->>>>>>> Stashed changes
     /* USER CODE BEGIN 3 */
   }
   HAL_ADC_Stop(&hadc1);
