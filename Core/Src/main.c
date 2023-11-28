@@ -19,6 +19,10 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include <stdio.h>
+#include "timer.h"
+#include "global.h"
+#include "command_parser.h"
+#include "uart_comunication.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -62,17 +66,18 @@ static void MX_TIM2_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-char str[50];
-uint8_t temp = 0;
-//uint8_t buffer[MAX_BUFFER_SIZE];
-//uint8_t index_buffer = 0;
-//uint8_t buffer_flag = 0;
+
 void HAL_UART_RxCpltCallback (UART_HandleTypeDef * huart) {
 	if(huart->Instance == USART2 ) {
+		buffer [ index_buffer ++] = temp ;
+		if( index_buffer == 30) index_buffer = 0;
+		buffer_flag = 1;
 		HAL_UART_Transmit(&huart2 ,&temp ,1 ,50);
 		HAL_UART_Receive_IT(&huart2, &temp ,1);
 	}
 }
+
+
 /* USER CODE END 0 */
 
 /**
@@ -107,23 +112,34 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
+  HAL_TIM_Base_Start_IT(&htim2);
   HAL_UART_Receive_IT(&huart2, &temp, 1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  uint32_t ADC_value = 0;
-  HAL_ADC_Start(&hadc1);
+  setTimer1(1000);
+  //clearTimer1();
+  //HAL_ADC_Start(&hadc1);
   while (1)
   {
     /* USER CODE END WHILE */
-	  HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
-	  ADC_value = HAL_ADC_GetValue(&hadc1) ;
-	  HAL_UART_Transmit (&huart2, (void *) str, sprintf(str, "%d\n", ADC_value), 1000);
-	  HAL_Delay(500);
+//	  HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+//	  ADC_value = HAL_ADC_GetValue(&hadc1) ;
+//	  HAL_UART_Transmit (&huart2, (void *) str, sprintf(str, "%d\n", ADC_value), 1000);
+//	  HAL_Delay(500);
+	  if (timer1_flag == 1){
+		  HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+		  setTimer1(1000);
+	  }
+	  if( buffer_flag == 1) {
+		  command_parser_fsm();
+		  buffer_flag = 0;
+	  }
+	  uart_communiation_fsm(hadc1, huart2);
     /* USER CODE BEGIN 3 */
   }
-  HAL_ADC_Stop(&hadc1);
+  //HAL_ADC_Stop(&hadc1);
   /* USER CODE END 3 */
 }
 
@@ -324,7 +340,9 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void HAL_TIM_PeriodElapsedCallback (TIM_HandleTypeDef * htim){
+	timer_run();
+}
 /* USER CODE END 4 */
 
 /**

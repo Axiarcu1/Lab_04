@@ -5,9 +5,6 @@
   <WINDOW type="default" module="ISIS"/>
  </FRAME>
  <MODULE name="VSMDEBUG">
-<<<<<<< Updated upstream
-  <PWI/>
-=======
   <PWI>
    <POPUP w="800" x="48" flags="00000002" y="155" h="200" pid="0" iid="-1">
     <PROPERTIES>
@@ -34,7 +31,7 @@
      <ITEM name="nItems">0</ITEM>
     </PROPERTIES>
    </POPUP>
-   <POPUP w="450" x="829" flags="00008023" y="174" h="250" pid="0" iid="2">
+   <POPUP w="450" x="287" flags="00008023" y="286" h="250" pid="0" iid="2">
     <PROPERTIES>
      <ITEM name="AutoEcho">0</ITEM>
      <ITEM name="HexMode">0</ITEM>
@@ -375,6 +372,5 @@
     <PROPERTIES/>
    </POPUP>
   </PWI>
->>>>>>> Stashed changes
  </MODULE>
 </WORKSPACE>
