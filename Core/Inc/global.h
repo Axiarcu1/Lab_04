@@ -10,10 +10,17 @@
 
 #include "main.h"
 
+#define START_COMMAND 0
+#define END_COMMAND 1
+
+#define RST 10
+#define SEND_ADC 11
+#define OK 12
+
 #define MAX_BUFFER_SIZE 30
 
-extern int status_parser;
-extern int status_uart;
+extern int parser_state;
+extern int uart_state;
 
 extern uint8_t temp;
 extern uint8_t buffer[MAX_BUFFER_SIZE];

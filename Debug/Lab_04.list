@@ -9,41 +9,41 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
   2 .rodata       00000070  08004098  08004098  00014098  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  3 .ARM.extab    00000000  08004108  08004108  00020074  2**0
+  3 .ARM.extab    00000000  08004108  08004108  00020078  2**0
                   CONTENTS
-  4 .ARM          00000000  08004108  08004108  00020074  2**0
+  4 .ARM          00000000  08004108  08004108  00020078  2**0
                   CONTENTS
-  5 .preinit_array 00000000  08004108  08004108  00020074  2**0
+  5 .preinit_array 00000000  08004108  08004108  00020078  2**0
                   CONTENTS, ALLOC, LOAD, DATA
   6 .init_array   00000004  08004108  08004108  00014108  2**2
                   CONTENTS, ALLOC, LOAD, DATA
   7 .fini_array   00000004  0800410c  0800410c  0001410c  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  8 .data         00000074  20000000  08004110  00020000  2**2
+  8 .data         00000078  20000000  08004110  00020000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .bss          00000188  20000074  08004184  00020074  2**2
+  9 .bss          00000184  20000078  08004188  00020078  2**2
                   ALLOC
- 10 ._user_heap_stack 00000604  200001fc  08004184  000201fc  2**0
+ 10 ._user_heap_stack 00000604  200001fc  08004188  000201fc  2**0
                   ALLOC
- 11 .ARM.attributes 00000029  00000000  00000000  00020074  2**0
+ 11 .ARM.attributes 00000029  00000000  00000000  00020078  2**0
                   CONTENTS, READONLY
- 12 .debug_info   0000e922  00000000  00000000  0002009d  2**0
+ 12 .debug_info   0000e922  00000000  00000000  000200a1  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_abbrev 0000224b  00000000  00000000  0002e9bf  2**0
+ 13 .debug_abbrev 0000224b  00000000  00000000  0002e9c3  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  14 .debug_aranges 00000dd0  00000000  00000000  00030c10  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  15 .debug_ranges 00000cc0  00000000  00000000  000319e0  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_macro  00018e62  00000000  00000000  000326a0  2**0
+ 16 .debug_macro  00018ea6  00000000  00000000  000326a0  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   0001080d  00000000  00000000  0004b502  2**0
+ 17 .debug_line   0001080f  00000000  00000000  0004b546  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    0008dfb2  00000000  00000000  0005bd0f  2**0
+ 18 .debug_str    0008dfe7  00000000  00000000  0005bd55  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000050  00000000  00000000  000e9cc1  2**0
+ 19 .comment      00000050  00000000  00000000  000e9d3c  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  00003c58  00000000  00000000  000e9d14  2**2
+ 20 .debug_frame  00003c58  00000000  00000000  000e9d8c  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -60,7 +60,7 @@ Disassembly of section .text:
  800011e:	2301      	movs	r3, #1
  8000120:	7023      	strb	r3, [r4, #0]
  8000122:	bd10      	pop	{r4, pc}
- 8000124:	20000074 	.word	0x20000074
+ 8000124:	20000078 	.word	0x20000078
  8000128:	00000000 	.word	0x00000000
  800012c:	08004080 	.word	0x08004080
 
@@ -73,7 +73,7 @@ Disassembly of section .text:
  800013a:	f3af 8000 	nop.w
  800013e:	bd08      	pop	{r3, pc}
  8000140:	00000000 	.word	0x00000000
- 8000144:	20000078 	.word	0x20000078
+ 8000144:	2000007c 	.word	0x2000007c
  8000148:	08004080 	.word	0x08004080
 
 0800014c <command_parser_fsm>:
@@ -85,7 +85,7 @@ Disassembly of section .text:
 void command_parser_fsm() {
  800014c:	b480      	push	{r7}
  800014e:	af00      	add	r7, sp, #0
-	if (status_parser == 0){
+	if (parser_state == START_COMMAND){
  8000150:	4b20      	ldr	r3, [pc, #128]	; (80001d4 <command_parser_fsm+0x88>)
  8000152:	681b      	ldr	r3, [r3, #0]
  8000154:	2b00      	cmp	r3, #0
@@ -95,7 +95,7 @@ void command_parser_fsm() {
  800015a:	781b      	ldrb	r3, [r3, #0]
  800015c:	2b21      	cmp	r3, #33	; 0x21
  800015e:	d135      	bne.n	80001cc <command_parser_fsm+0x80>
-			status_parser = 1;
+			parser_state = END_COMMAND;
  8000160:	4b1c      	ldr	r3, [pc, #112]	; (80001d4 <command_parser_fsm+0x88>)
  8000162:	2201      	movs	r2, #1
  8000164:	601a      	str	r2, [r3, #0]
@@ -110,7 +110,7 @@ void command_parser_fsm() {
 	}
 }
  800016c:	e02e      	b.n	80001cc <command_parser_fsm+0x80>
-	else if (status_parser == 1){
+	else if (parser_state == END_COMMAND){
  800016e:	4b19      	ldr	r3, [pc, #100]	; (80001d4 <command_parser_fsm+0x88>)
  8000170:	681b      	ldr	r3, [r3, #0]
  8000172:	2b01      	cmp	r3, #1
@@ -120,7 +120,7 @@ void command_parser_fsm() {
  8000178:	781b      	ldrb	r3, [r3, #0]
  800017a:	2b23      	cmp	r3, #35	; 0x23
  800017c:	d10c      	bne.n	8000198 <command_parser_fsm+0x4c>
-			status_parser = 0;
+			parser_state = START_COMMAND;
  800017e:	4b15      	ldr	r3, [pc, #84]	; (80001d4 <command_parser_fsm+0x88>)
  8000180:	2200      	movs	r2, #0
  8000182:	601a      	str	r2, [r3, #0]
@@ -173,7 +173,7 @@ void command_parser_fsm() {
  80001ce:	46bd      	mov	sp, r7
  80001d0:	bc80      	pop	{r7}
  80001d2:	4770      	bx	lr
- 80001d4:	20000090 	.word	0x20000090
+ 80001d4:	20000094 	.word	0x20000094
  80001d8:	20000098 	.word	0x20000098
  80001dc:	200000da 	.word	0x200000da
  80001e0:	200000bc 	.word	0x200000bc
@@ -1482,7 +1482,7 @@ void setTimer1(int duration){	//set timer interrupt for every second counts decr
  800084a:	bc80      	pop	{r7}
  800084c:	4770      	bx	lr
  800084e:	bf00      	nop
- 8000850:	20000004 	.word	0x20000004
+ 8000850:	20000008 	.word	0x20000008
  8000854:	200001d8 	.word	0x200001d8
  8000858:	200001e0 	.word	0x200001e0
 
@@ -1511,7 +1511,7 @@ void setTimer2(int duration){	//set timer interrupt for switching between state
  800087e:	bc80      	pop	{r7}
  8000880:	4770      	bx	lr
  8000882:	bf00      	nop
- 8000884:	20000004 	.word	0x20000004
+ 8000884:	20000008 	.word	0x20000008
  8000888:	200001dc 	.word	0x200001dc
  800088c:	200001e4 	.word	0x200001e4
 
@@ -1611,10 +1611,10 @@ void uart_communiation_fsm(ADC_HandleTypeDef hadc1, UART_HandleTypeDef huart2) {
  8000910:	af00      	add	r7, sp, #0
  8000912:	f107 0c08 	add.w	ip, r7, #8
  8000916:	e88c 000f 	stmia.w	ip, {r0, r1, r2, r3}
-	if (status_uart == 0){
+	if (uart_state == RST){
  800091a:	4b44      	ldr	r3, [pc, #272]	; (8000a2c <uart_communiation_fsm+0x120>)
  800091c:	681b      	ldr	r3, [r3, #0]
- 800091e:	2b00      	cmp	r3, #0
+ 800091e:	2b0a      	cmp	r3, #10
  8000920:	d136      	bne.n	8000990 <uart_communiation_fsm+0x84>
 		if (command_flag == 1) {
  8000922:	4b43      	ldr	r3, [pc, #268]	; (8000a30 <uart_communiation_fsm+0x124>)
@@ -1661,24 +1661,24 @@ void uart_communiation_fsm(ADC_HandleTypeDef hadc1, UART_HandleTypeDef huart2) {
  8000976:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
  800097a:	4931      	ldr	r1, [pc, #196]	; (8000a40 <uart_communiation_fsm+0x134>)
  800097c:	f002 f8ac 	bl	8002ad8 <HAL_UART_Transmit>
-				status_uart = 1;
+				uart_state = SEND_ADC;
  8000980:	4b2a      	ldr	r3, [pc, #168]	; (8000a2c <uart_communiation_fsm+0x120>)
- 8000982:	2201      	movs	r2, #1
+ 8000982:	220b      	movs	r2, #11
  8000984:	601a      	str	r2, [r3, #0]
 				setTimer2(3000);
  8000986:	f640 30b8 	movw	r0, #3000	; 0xbb8
  800098a:	f7ff ff67 	bl	800085c <setTimer2>
 		if(timer2_flag == 1) {
-			status_uart = 1;
+			uart_state = SEND_ADC;
 			setTimer2(3000);
 		}
 	}
 }
  800098e:	e047      	b.n	8000a20 <uart_communiation_fsm+0x114>
-	else if (status_uart == 1){
+	else if (uart_state == SEND_ADC){
  8000990:	4b26      	ldr	r3, [pc, #152]	; (8000a2c <uart_communiation_fsm+0x120>)
  8000992:	681b      	ldr	r3, [r3, #0]
- 8000994:	2b01      	cmp	r3, #1
+ 8000994:	2b0b      	cmp	r3, #11
  8000996:	d113      	bne.n	80009c0 <uart_communiation_fsm+0xb4>
 		HAL_UART_Transmit(&huart2, (void*)str, sprintf(str, "!ADC=%lu#\r\n", ADC_value), 1000);
  8000998:	4b27      	ldr	r3, [pc, #156]	; (8000a38 <uart_communiation_fsm+0x12c>)
@@ -1693,16 +1693,16 @@ void uart_communiation_fsm(ADC_HandleTypeDef hadc1, UART_HandleTypeDef huart2) {
  80009ae:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
  80009b2:	4923      	ldr	r1, [pc, #140]	; (8000a40 <uart_communiation_fsm+0x134>)
  80009b4:	f002 f890 	bl	8002ad8 <HAL_UART_Transmit>
-		status_uart = 2;
+		uart_state = OK;
  80009b8:	4b1c      	ldr	r3, [pc, #112]	; (8000a2c <uart_communiation_fsm+0x120>)
- 80009ba:	2202      	movs	r2, #2
+ 80009ba:	220c      	movs	r2, #12
  80009bc:	601a      	str	r2, [r3, #0]
 }
  80009be:	e02f      	b.n	8000a20 <uart_communiation_fsm+0x114>
-	else if (status_uart == 2){
+	else if (uart_state == OK){
  80009c0:	4b1a      	ldr	r3, [pc, #104]	; (8000a2c <uart_communiation_fsm+0x120>)
  80009c2:	681b      	ldr	r3, [r3, #0]
- 80009c4:	2b02      	cmp	r3, #2
+ 80009c4:	2b0c      	cmp	r3, #12
  80009c6:	d12b      	bne.n	8000a20 <uart_communiation_fsm+0x114>
 		if (command_flag == 1) {
  80009c8:	4b19      	ldr	r3, [pc, #100]	; (8000a30 <uart_communiation_fsm+0x124>)
@@ -1732,9 +1732,9 @@ void uart_communiation_fsm(ADC_HandleTypeDef hadc1, UART_HandleTypeDef huart2) {
  80009f6:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
  80009fa:	4911      	ldr	r1, [pc, #68]	; (8000a40 <uart_communiation_fsm+0x134>)
  80009fc:	f002 f86c 	bl	8002ad8 <HAL_UART_Transmit>
-				status_uart = 0;
+				uart_state = RST;
  8000a00:	4b0a      	ldr	r3, [pc, #40]	; (8000a2c <uart_communiation_fsm+0x120>)
- 8000a02:	2200      	movs	r2, #0
+ 8000a02:	220a      	movs	r2, #10
  8000a04:	601a      	str	r2, [r3, #0]
 				clearTimer2();
  8000a06:	f7ff ff43 	bl	8000890 <clearTimer2>
@@ -1743,9 +1743,9 @@ void uart_communiation_fsm(ADC_HandleTypeDef hadc1, UART_HandleTypeDef huart2) {
  8000a0c:	681b      	ldr	r3, [r3, #0]
  8000a0e:	2b01      	cmp	r3, #1
  8000a10:	d106      	bne.n	8000a20 <uart_communiation_fsm+0x114>
-			status_uart = 1;
+			uart_state = SEND_ADC;
  8000a12:	4b06      	ldr	r3, [pc, #24]	; (8000a2c <uart_communiation_fsm+0x120>)
- 8000a14:	2201      	movs	r2, #1
+ 8000a14:	220b      	movs	r2, #11
  8000a16:	601a      	str	r2, [r3, #0]
 			setTimer2(3000);
  8000a18:	f640 30b8 	movw	r0, #3000	; 0xbb8
@@ -1756,7 +1756,7 @@ void uart_communiation_fsm(ADC_HandleTypeDef hadc1, UART_HandleTypeDef huart2) {
  8000a24:	e8bd 4080 	ldmia.w	sp!, {r7, lr}
  8000a28:	b004      	add	sp, #16
  8000a2a:	4770      	bx	lr
- 8000a2c:	20000094 	.word	0x20000094
+ 8000a2c:	20000000 	.word	0x20000000
  8000a30:	200000db 	.word	0x200000db
  8000a34:	200000bc 	.word	0x200000bc
  8000a38:	20000110 	.word	0x20000110
@@ -1843,11 +1843,11 @@ LoopFillZerobss:
   ldr r0, =_sdata
  8000a80:	20000000 	.word	0x20000000
   ldr r1, =_edata
- 8000a84:	20000074 	.word	0x20000074
+ 8000a84:	20000078 	.word	0x20000078
   ldr r2, =_sidata
  8000a88:	08004110 	.word	0x08004110
   ldr r2, =_sbss
- 8000a8c:	20000074 	.word	0x20000074
+ 8000a8c:	20000078 	.word	0x20000078
   ldr r4, =_ebss
  8000a90:	200001fc 	.word	0x200001fc
 
@@ -1969,9 +1969,9 @@ __weak HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
  8000b12:	3708      	adds	r7, #8
  8000b14:	46bd      	mov	sp, r7
  8000b16:	bd80      	pop	{r7, pc}
- 8000b18:	20000000 	.word	0x20000000
- 8000b1c:	2000000c 	.word	0x2000000c
- 8000b20:	20000008 	.word	0x20000008
+ 8000b18:	20000004 	.word	0x20000004
+ 8000b1c:	20000010 	.word	0x20000010
+ 8000b20:	2000000c 	.word	0x2000000c
 
 08000b24 <HAL_IncTick>:
   * @note This function is declared as __weak to be overwritten in case of other
@@ -1996,7 +1996,7 @@ __weak void HAL_IncTick(void)
  8000b3a:	46bd      	mov	sp, r7
  8000b3c:	bc80      	pop	{r7}
  8000b3e:	4770      	bx	lr
- 8000b40:	2000000c 	.word	0x2000000c
+ 8000b40:	20000010 	.word	0x20000010
  8000b44:	200001e8 	.word	0x200001e8
 
 08000b48 <HAL_GetTick>:
@@ -3037,7 +3037,7 @@ HAL_StatusTypeDef HAL_ADC_ConfigChannel(ADC_HandleTypeDef* hadc, ADC_ChannelConf
  80010b8:	bc80      	pop	{r7}
  80010ba:	4770      	bx	lr
  80010bc:	40012400 	.word	0x40012400
- 80010c0:	20000000 	.word	0x20000000
+ 80010c0:	20000004 	.word	0x20000004
  80010c4:	431bde83 	.word	0x431bde83
 
 080010c8 <ADC_Enable>:
@@ -3173,7 +3173,7 @@ HAL_StatusTypeDef ADC_Enable(ADC_HandleTypeDef* hadc)
  800116e:	46bd      	mov	sp, r7
  8001170:	bd80      	pop	{r7, pc}
  8001172:	bf00      	nop
- 8001174:	20000000 	.word	0x20000000
+ 8001174:	20000004 	.word	0x20000004
  8001178:	431bde83 	.word	0x431bde83
 
 0800117c <ADC_ConversionStop_Disable>:
@@ -5690,8 +5690,8 @@ if (((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_PCLK1) == RCC_CLOCKTYPE_PCLK
  8001fa0:	40022000 	.word	0x40022000
  8001fa4:	40021000 	.word	0x40021000
  8001fa8:	080040a8 	.word	0x080040a8
- 8001fac:	20000000 	.word	0x20000000
- 8001fb0:	20000008 	.word	0x20000008
+ 8001fac:	20000004 	.word	0x20000004
+ 8001fb0:	2000000c 	.word	0x2000000c
 
 08001fb4 <HAL_RCC_GetSysClockFreq>:
   *         right SYSCLK value. Otherwise, any configuration based on this function will be incorrect.
@@ -5845,7 +5845,7 @@ uint32_t HAL_RCC_GetHCLKFreq(void)
  8002066:	46bd      	mov	sp, r7
  8002068:	bc80      	pop	{r7}
  800206a:	4770      	bx	lr
- 800206c:	20000000 	.word	0x20000000
+ 800206c:	20000004 	.word	0x20000004
 
 08002070 <HAL_RCC_GetPCLK1Freq>:
   * @note   Each time PCLK1 changes, this function must be called to update the
@@ -5937,7 +5937,7 @@ static void RCC_Delay(uint32_t mdelay)
  80020ee:	46bd      	mov	sp, r7
  80020f0:	bc80      	pop	{r7}
  80020f2:	4770      	bx	lr
- 80020f4:	20000000 	.word	0x20000000
+ 80020f4:	20000004 	.word	0x20000004
  80020f8:	10624dd3 	.word	0x10624dd3
 
 080020fc <HAL_RCCEx_PeriphCLKConfig>:
@@ -9933,7 +9933,7 @@ static void UART_SetConfig(UART_HandleTypeDef *huart)
  800372a:	6818      	ldr	r0, [r3, #0]
  800372c:	4770      	bx	lr
  800372e:	bf00      	nop
- 8003730:	20000010 	.word	0x20000010
+ 8003730:	20000014 	.word	0x20000014
 
 08003734 <__libc_init_array>:
  8003734:	b570      	push	{r4, r5, r6, lr}
@@ -10013,7 +10013,7 @@ static void UART_SetConfig(UART_HandleTypeDef *huart)
  80037d8:	f85d eb04 	ldr.w	lr, [sp], #4
  80037dc:	b003      	add	sp, #12
  80037de:	4770      	bx	lr
- 80037e0:	20000010 	.word	0x20000010
+ 80037e0:	20000014 	.word	0x20000014
  80037e4:	ffff0208 	.word	0xffff0208
 
 080037e8 <__ssputs_r>:

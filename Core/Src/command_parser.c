@@ -8,15 +8,15 @@
 #include "command_parser.h"
 
 void command_parser_fsm() {
-	if (status_parser == 0){
+	if (parser_state == START_COMMAND){
 		if (temp == '!'){
-			status_parser = 1;
+			parser_state = END_COMMAND;
 			command_index = 0;
 		}
 	}
-	else if (status_parser == 1){
+	else if (parser_state == END_COMMAND){
 		if (temp == '#'){
-			status_parser = 0;
+			parser_state = START_COMMAND;
 			command[command_index] = '\0';
 			command_flag = 1;
 		}

@@ -7,8 +7,8 @@
 
 #include "global.h"
 
-int status_parser = 0;
-int status_uart = 0;
+int parser_state = START_COMMAND;
+int uart_state = RST;
 
 uint8_t temp = 0;
 uint8_t buffer[MAX_BUFFER_SIZE];
